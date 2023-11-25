@@ -1,5 +1,9 @@
 class Level1:
     def bfs():
+        pass
     def dfs():
+        pass
     def a_star():
-    def ucs:
+        pass
+    def ucs():
+        pass
