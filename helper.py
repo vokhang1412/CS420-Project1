@@ -22,6 +22,10 @@ def read_map(filename):
     map_info = []
     agent_pos = []
     goal_pos = []
+    key_pos = []
+    door_pos = []
+    up_stairs_pos = []
+    down_stairs_pos = []
     with open(filename, 'r') as f:
         # 2. Read the first line to get the number of rows and columns
         rows, cols = map(int, f.readline().strip().split(','))
@@ -38,28 +42,56 @@ def read_map(filename):
                     print(line)
                     row = []
                     for i in range(cols):
+                        # Read blank space
                         if line[i] == '0':
                             row.append(0)
+                        # Read obstacles
                         elif line[i] == '-1':
                             row.append(-1)
+                        # Read agents
                         elif line[i].find('A') != -1:
                             row.append(0)
                             # Find the number after A
                             num = int(line[i][1:])
                             # Add the agent to the list corresponding to the number
                             agent_pos.insert(num-1, (len(map_info), len(board), i)) # floor, row, col
+                        # Read goals
                         elif line[i].find('T') != -1:
                             row.append(0)
                             # Find the number after T
                             num = int(line[i][1:])
                             # Add the goal to the list corresponding to the number
                             goal_pos.insert(num-1, (len(map_info), len(board), i))
+                        # Read keys
+                        elif line[i].find('K') != -1:
+                            row.append(0)
+                            # Find the number after K
+                            num = int(line[i][1:])
+                            # Add the key to the list corresponding to the number
+                            key_pos.insert(num-1, (len(map_info), len(board), i))
+                        # Read UP stairs
+                        elif line[i] == 'UP':
+                            row.append(0)
+                            # Add the UP stairs to the list
+                            up_stairs_pos.append((len(map_info), len(board), i))
+                        # Read DOWN stairs
+                        elif line[i] == 'DO':
+                            row.append(0)
+                            # Add the DOWN stairs to the list
+                            down_stairs_pos.append((len(map_info), len(board), i))
+                        # Read doors
+                        elif line[i].find('D') != -1:
+                            row.append(0)
+                            # Find the number after D
+                            num = int(line[i][1:])
+                            # Add the door to the list corresponding to the number
+                            door_pos.insert(num-1, (len(map_info), len(board), i))
                         else:
                             row.append(line[i])
                     board.append(row)
                 map_info.append(board)
     # 5. Return the map
-    return map_info, agent_pos, goal_pos
+    return map_info, agent_pos, goal_pos, key_pos, door_pos, up_stairs_pos, down_stairs_pos
 
 def test_print_map(map_info):
     # This function is used to test the map
