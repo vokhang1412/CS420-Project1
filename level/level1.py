@@ -1,3 +1,4 @@
+from queue import Queue, PriorityQueue
 class Level1:
     @staticmethod    
     def is_valid_move(pos, map_info):
@@ -11,7 +12,6 @@ class Level1:
             new_x, new_y = x + dx, y + dy
             if not (0 <= new_x < len(map_info) and 0 <= new_y < len(map_info[0]) and map_info[new_x][new_y] == 0):
                 return False
-
         return True
 
     def get_neighbors(self,pos,map_info):
@@ -139,11 +139,11 @@ class Level1:
                     visited.add(neighbor)
 
         return None
-    @staticmethod  
+    @staticmethod
     def reconstruct_path(came_from, start, goal):
         current = goal
-        path = [current]
+        path = [(0, current[0], current[1])] 
         while current != start:
             current = came_from[current]
-            path.append(current)
+            path.append((0, current[0], current[1]))
         return path[::-1]
