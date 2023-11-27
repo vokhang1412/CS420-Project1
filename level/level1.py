@@ -1,33 +1,32 @@
-from queue import Queue, PriorityQueue
 class Level1:
-    def __init__(self, map_info):
-        self.map_info=map_info
+    @staticmethod    
     def is_valid_move(pos, map_info):
         x, y = pos
         return 0 <= x < len(map_info) and 0 <= y < len(map_info[0]) and map_info[x][y] == 0
-
-    def is_valid_diagonal_move(self, grid, x, y, a, b):
+    @staticmethod  
+    def is_valid_diagonal_move(map_info, x, y, a, b):
         diagonals = [(a, 0), (a, b), (0, b)]
 
         for dx, dy in diagonals:
             new_x, new_y = x + dx, y + dy
-            if not (0 <= new_x < len(self.map_info) and 0 <= new_y < len(self.map_info[0]) and grid[new_x][new_y] == 0):
+            if not (0 <= new_x < len(map_info) and 0 <= new_y < len(map_info[0]) and map_info[new_x][new_y] == 0):
                 return False
 
         return True
 
-    def get_neighbors(self,pos,grid):
+    def get_neighbors(self,pos,map_info):
         x, y = pos
         neighbors = [(x+1, y), (x-1, y), (x, y+1), (x, y-1)]
         neighbors_diagonal = [(x+1, y+1), (x+1, y-1), (x-1, y+1), (x-1, y-1)]
         neighbor=[]
         for nei in neighbors_diagonal:
-            if self.is_valid_diagonal_move(grid, x,y,nei[0]-x,nei[1]-y):
+            if self.is_valid_diagonal_move(map_info, x,y,nei[0]-x,nei[1]-y):
                 neighbor.append(nei)
         for nei in neighbors:
-            if self.is_valid_move(nei,grid):
+            if self.is_valid_move(nei,map_info):
                 neighbor.append(nei)
         return neighbor
+
     def bfs(self,map_info, agent):
         start = agent.start
         goal = agent.goal
@@ -55,7 +54,10 @@ class Level1:
     def dfs(self, map_info, agent):
         start = agent.start
         goal = agent.goal
-        visited = set()
+        rows, cols = len(map_info), len(map_info[0])
+
+        visited = [[False] * cols for _ in range(rows)]
+
         stack = [start]
         came_from = {}
 
@@ -65,16 +67,20 @@ class Level1:
             if current == goal:
                 agent.path = self.reconstruct_path(came_from, start, goal)
                 return agent.path
-
-            if current not in visited:
-                visited.add(current)
+            x, y = current  
+            if not visited[x][y]:
+                visited[x][y] = True  
 
                 neighbors = self.get_neighbors(current, map_info)
                 stack.extend(neighbors)
                 for neighbor in neighbors:
+                    x,y=neighbor
+                    if visited[x][y] == True:
+                        continue
                     came_from[neighbor] = current
 
         return None
+
 
     def ucs(self, map_info, agent):
         start = agent.start
@@ -102,7 +108,7 @@ class Level1:
                     visited.add(neighbor)
 
         return None
-
+    @staticmethod  
     def manhattan_distance(p1, p2):
         return abs(p1[0] - p2[0]) + abs(p1[1] - p2[1])
 
@@ -133,6 +139,7 @@ class Level1:
                     visited.add(neighbor)
 
         return None
+    @staticmethod  
     def reconstruct_path(came_from, start, goal):
         current = goal
         path = [current]
@@ -140,4 +147,3 @@ class Level1:
             current = came_from[current]
             path.append(current)
         return path[::-1]
-
