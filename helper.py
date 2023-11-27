@@ -39,7 +39,6 @@ def read_map(filename):
                 # 4. Read the floor
                 for _ in range(rows):
                     line = f.readline().strip().split(',')
-                    print(line)
                     row = []
                     for i in range(cols):
                         # Read blank space
