@@ -1,5 +1,8 @@
 import pygame
+import export_heatmap
 from .render_info import RenderInfo
+
+period = 0.1
 
 class Display:
     def __init__(self, map_info, keys, doors, up_stairs, down_stairs, paths, goal_pos):
@@ -22,6 +25,9 @@ class Display:
         self.screen.blit(self.surface, (self.center_x, self.center_y))
 
         self.render_info.agents_paths = paths
+
+        self.to_export = []
+
         self.render_info.agents_current_pos = []
 
     def run(self):
@@ -39,12 +45,20 @@ class Display:
                     elif event.key == pygame.K_DOWN:
                         self.render_info.go_down()
 
-            if self.accu_time >= 1:
-                self.accu_time -= 1
+            if self.accu_time >= period:
+                self.accu_time -= period
                 self.render_info.update_current_pos()
                 
             self.render_info.draw(self.surface)
 
             self.screen.blit(self.surface, (self.center_x, self.center_y))
             pygame.display.flip()
+
+            if self.render_info.agents_paths[0] == []:
+                pygame.time.wait(1000)
+                for path in self.to_export:
+                    exporter = export_heatmap.HeatmapExporting(self.render_info.map_info, path, self.to_export.index(path) + 1)
+                    exporter.export()
+                pygame.quit()
+                quit()
 

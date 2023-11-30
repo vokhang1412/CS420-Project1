@@ -78,13 +78,15 @@ class RenderInfo:
                 surface.blit(text, text_rect)
         # If the cell is an agent, add text A<num> to the cell
         for agent in self.agents_current_pos:
-            if agent[0] == self.floor - 1:
+            if agent and agent[0] == self.floor - 1:
                 rect = pygame.Rect(agent[2] * (self.cell_size + self.margin), agent[1] * (self.cell_size + self.margin), self.cell_size, self.cell_size)
                 pygame.draw.rect(surface, (255, 0, 0), rect)
-                text = self.font.render('A' + str(self.agents_current_pos.index(agent) + 1), True, (255, 0, 0))
+                text = self.font.render('A' + str(self.agents_current_pos.index(agent) + 1), True, (0, 0, 0))
                 text_rect = text.get_rect(center=(rect.x + rect.width / 2, rect.y + rect.height / 2))
                 surface.blit(text, text_rect)
-        surface.blit(surface, (0, 0))
+            surface.blit(surface, (0, 0))
+        
+            
 
     def go_up(self):
         if self.floor == len(self.map_info):
