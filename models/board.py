@@ -26,6 +26,7 @@ class Board:
     has_key = []
     goal_successors = []
     visited = {}
+    ok = False
     def __init__(self, floor, rows, cols, map_info, agent_pos, goal_pos, key_pos, door_pos, up_stairs_pos, down_stairs_pos) -> None:
         self.floor = floor
         self.rows = rows
@@ -51,13 +52,15 @@ class Board:
     def check_valid_for_agent(self, cur):
         if cur[1] < 0 or cur[1] >= self.rows or cur[2] < 0 or cur[2] >= self.cols or self.map[cur[0]][cur[1]][cur[2]] == -1:
             return False
-        if self.door_number.get(cur):
+        if self.door_number.get(cur) != None:
             return self.has_key[self.door_number[cur]]
         return True
     def get_successor_for_agent(self, cur):
         successors = []
         for i in range(len(self.dx)):
             pos = (cur[0], cur[1] + self.dx[i], cur[2] + self.dy[i])
+            # if pos == (0, 3, 5):
+            #     print(self.check_valid_for_agent(pos))
             if self.check_valid_for_agent(pos):
                 successors.append(pos)
         for i in range(len(self.dx_diagonal)):
@@ -67,10 +70,10 @@ class Board:
             if self.check_valid_for_agent(pos) and self.check_valid_for_agent(pos1) and self.check_valid_for_agent(pos2):
                 successors.append(pos)
         pos = (cur[0] + 1, cur[1], cur[2])
-        if pos[0] < self.floor and self.is_up[pos]:
+        if pos[0] < self.floor and self.is_up.get(cur) == True:
             successors.append(pos)
         pos = (cur[0] - 1, cur[1], cur[2])
-        if pos[0] >= 0 and self.is_down[pos]:
+        if pos[0] >= 0 and self.is_down.get(cur) == True:
             successors.append(pos)
         return successors
     def check_valid(self, cur):
