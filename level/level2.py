@@ -1,17 +1,19 @@
 from queue import Queue, PriorityQueue
-from models.agent import Agent
-from models.board import Board
+from models import agent
+from models import board
 class Level2:
     def construct_path(self, start, goal, come_from):
         cur = goal
         path = []
         path.extend(cur)
+        cur = come_from[goal]
         while cur != start:
-            cur = come_from[goal]
             path.extend(cur)
+            cur = come_from[goal]
         return path[::-1]
     def find_path(self, agent, start, goal, board):
-        path = []
+        dist = {}
+        come_from = {}
         pq = PriorityQueue()
         pq.put((max(start.x - goal.x, start.y - goal.y), start))
         dist[start] = 0
@@ -23,86 +25,89 @@ class Level2:
             if cur == goal:
                 agent.add_path(self.construct_path(start, goal, come_from))
                 return
-            successor = agent.get_successor(cur, board)
+            successor = board.get_successor_for_agent(cur, agent)
             for pos in successor:
-                if board.check_valid(agent, pos) and (pos not in dist or dist[pos] > dist[cur] + 1):
-                    pq.put((max(abs(pos.x - goal.x), abs(pos.y - goal. y)), pos))
+                if board.check_valid(pos, agent) and (pos not in dist or dist[pos] > dist[cur] + 1):
                     come_from[pos] = cur 
                     dist[pos] = dist[cur] + 1
+                    pq.put((max(abs(pos.x - goal.x), abs(pos.y - goal.y)) + dist[pos], pos))
     def bfs_for_agent(self, agent, board):  #find KEYS the agent can reach
         q = Queue()
         q.put(agent.pos)
+        visited = {}
         while not q.empty():
             cur = q.get()
-            if visited[cur]:
+            if visited.get(cur) != None:
                 continue
             visited[cur] = True
-            if board.is_key(cur):
-                self.can_visit_key[board.key_number(cur)] = True
+            if cur in board.keys:
+                board.can_visit_key[board.key_number[cur]] = True
                 continue
-            if board.is_goal(cur):
-                self.can_visit_goal[board.key_number(cur)] = True
+            if cur == board.keys[0]:
+                board.can_visit_key[0] = True
                 continue
-            successors = agent.get_successor(cur, board)
-            for pos in successor:
+            successors = board.get_successors(cur)
+            for pos in successors:
                     q.put(pos)
             
     def bfs_for_keys(self, agent, index, board): #find DOORS the key can reach
         q = Queue()
         q.put(index)
-        self.successors[index] = [] # for keys, index always > 0
+        visited = {}
+        board.successors[index] = [] # for keys, index always > 0
         while not q.empty():
             cur = q.get()
-            if visited[cur]:
+            if visited.get(cur) != None:
                 continue
             visited[cur] = True
-            if board.is_door(cur):
-                self.can_visit_key[board.key_number(cur)] = True
-                if board.door_number[cur] != index:
-                    self.successors[index].append(cur)
+            if board.door_number.get(cur):
+                board.can_visit_key[board.key_number[cur]] = True
+                if board.door_number.get(cur) != index:
+                    board.successors[index].append(cur)
                 else:
-                    self.can_visit_door[cur] = True
+                    board.can_visit_door[cur] = True
                 continue
-            successors = agent.get_successor(cur, board)
+            successors = board.get_successors(cur)
             for pos in successors:
                 q.put(pos)
     def bfs_for_goal(self, board): #find DOORS the goal can reach
         q = Queue()
         q.put(board.goal)
-        self.successors[0] = [] # for goal, index = 0
+        visited = {}
+        board.successors[0] = [] # for goal, index = 0
         while not q.empty():
             cur = q.get()
             if visited[cur]:
                 continue
             visited[cur] = True
-            if board.is_door(cur):
-                self.successors[0].append(cur)
+            if board.door_number[cur] > 0:
+                board.successors[0].append(cur)
                 continue
-            successors = agents.get_successor(cur, board)
+            successors = board.get_successors(cur)
             for pos in successors:
                 q.put(pos)
     def find_plan(self, index, agent, board): #dfs
-        cur = self.position[index]
-        if self.visited[cur] != 0:
+        cur = board.position_key[index]
+        if board.visited[cur] != 0:
             return
-        self.visited[cur] = 1
+        board.visited[cur] = 1
         if index == 0:
-            if self.goal_reachable:
+            if board.can_visit_key[0]:
                 agent.path_plan.append(agent.pos)
-                self.ok = True
+                board.ok = True
                 return
-        elif self.can_visit_door[cur] and self.can_visit_key[board.keys[index]]:
+        elif board.can_visit_door[cur] and board.can_visit_key[board.keys[index]]:
             agent.path_plan.append(agent.pos)
-            self.ok = True
+            board.ok = True
             return
-        for pos in self.successors[index]:
+        for pos in board.successors[index]:
             id = board.door_number(pos)
             agent.path_plan.append(pos)
-            self.find_plan(id, agent, board)
-            if self.ok:
+            board.find_plan(id, agent, board)
+            if board.ok:
                 return
             agent.path_plan.pop()
-        self.visited[cur] = -1
+        board.visited[cur] = -1
         
     def convert_path_from_plan(self, agent, board):
         cur = agent.path_plan.pop()
@@ -113,16 +118,16 @@ class Level2:
             if board.is_goal(next):
                 self.find_path(agent, cur, next, board)
                 return
-            self.find_path(agent, cur, self.position[board.door_number[next]], board)
-            cur = self.find_path(agent, cur, self.position[board.door_number[next]], board)
+            self.find_path(agent, cur, board.position_key[board.door_number[next]], board)
+            cur = board.position_key[board.door_number[next]]
             self.find_path(agent, cur, next, board)
             cur = next
     def solve(self, board, agent):
-        self.bfs_for_agent(agent)
-        for i in len(board.keys):
+        self.bfs_for_agent(agent, board)
+        for i in range(len(board.keys)):
             self.bfs_for_keys(agent, i, board)
         self.bfs_for_goal(board)
-        self.path_plan = []
-        self.path_plan.append(board.goal)
+        agent.path_plan = []
+        agent.path_plan.append(board.goal)
         self.find_plan(0, agent, board)
         self.convert_path_from_plan(self, agent, board)

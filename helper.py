@@ -84,13 +84,13 @@ def read_map(filename):
                             # Find the number after D
                             num = int(line[i][1:])
                             # Add the door to the list corresponding to the number
-                            door_pos.insert(num-1, (len(map_info), len(board), i))
+                            door_pos.append((num-1, (len(map_info), len(board), i)))
                         else:
                             row.append(line[i])
                     board.append(row)
                 map_info.append(board)
     # 5. Return the map
-    return map_info, agent_pos, goal_pos, key_pos, door_pos, up_stairs_pos, down_stairs_pos
+    return len(map_info), rows, cols, map_info, agent_pos, goal_pos, key_pos, door_pos, up_stairs_pos, down_stairs_pos
 
 def test_print_map(map_info):
     # This function is used to test the map
