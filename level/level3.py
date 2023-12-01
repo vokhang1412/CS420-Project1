@@ -118,8 +118,9 @@ class Level3:
             if board.is_goal(next):
                 self.find_path(agent, cur, next, board)
                 return
-            self.find_path(agent, cur, board.position_key[board.door_number[next]], board)
-            cur = board.position_key[board.door_number[next]]
+            self.find_path(agent, cur, board.keys[board.door_number[next]], board)
+            cur = board.keys[board.door_number[next]]
+            board.has_key[board.door_number[next]] = True
             self.find_path(agent, cur, next, board)
             cur = next
     def solve(self, board, agent):
