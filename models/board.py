@@ -22,6 +22,8 @@ class Board:
     key_number = {}
     door_number = {}
     successors = []
+    goal_successors = []
+    visited = {}
     def __init__(self, floor, rows, cols, map_info, agent_pos, goal_pos, key_pos, door_pos, up_stairs_pos, down_stairs_pos) -> None:
         self.floor = floor
         self.rows = rows
@@ -41,6 +43,8 @@ class Board:
             self.door_number[door_pos[i][1]] = door_pos[i][0]
         for i in range(len(key_pos) + 1):
             self.successors.append([])
+        for i in range(len(goal_pos)):
+            self.goal_successors.append([])
             
     def check_valid_for_agent(self, cur, agent):
         if cur[1] < 0 or cur[2] >= self.rows or cur.y < 0 or cur.y >= self.cols or self.map[cur[0]][cur[1]][cur[2]] == -1:

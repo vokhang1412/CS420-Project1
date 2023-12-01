@@ -43,7 +43,7 @@ class Level2:
             if cur in board.keys:
                 board.can_visit_key[board.key_number[cur]] = True
                 continue
-            if cur == board.keys[0]:
+            if cur == board.goal_pos[0]:
                 board.can_visit_key[0] = True
                 continue
             successors = board.get_successors(cur)
@@ -52,16 +52,16 @@ class Level2:
             
     def bfs_for_keys(self, agent, index, board): #find DOORS the key can reach
         q = Queue()
-        q.put(index)
+        pos = board.keys[index]
+        q.put(pos)
         visited = {}
-        board.successors[index] = [] # for keys, index always > 0
+        board.successors[index] = []
         while not q.empty():
             cur = q.get()
             if visited.get(cur) != None:
                 continue
             visited[cur] = True
             if board.door_number.get(cur):
-                board.can_visit_key[board.key_number[cur]] = True
                 if board.door_number.get(cur) != index:
                     board.successors[index].append(cur)
                 else:
@@ -72,23 +72,23 @@ class Level2:
                 q.put(pos)
     def bfs_for_goal(self, board): #find DOORS the goal can reach
         q = Queue()
-        q.put(board.goal)
+        q.put(board.goal_pos[0])
         visited = {}
-        board.successors[0] = [] # for goal, index = 0
+        board.goal_successors[0] = [] # for goal, index = 0
         while not q.empty():
             cur = q.get()
-            if visited[cur]:
+            if visited.get(cur):
                 continue
             visited[cur] = True
-            if board.door_number[cur] > 0:
-                board.successors[0].append(cur)
+            if board.door_number.get(cur):
+                board.goal_successors[0].append(cur)
                 continue
             successors = board.get_successors(cur)
             for pos in successors:
                 q.put(pos)
     def find_plan(self, index, agent, board): #dfs
-        cur = board.position_key[index]
-        if board.visited[cur] != 0:
+        cur = board.keys[index]
+        if board.visited.get(cur) == None:
             return
         board.visited[cur] = 1
         if index == 0:
@@ -128,6 +128,6 @@ class Level2:
             self.bfs_for_keys(agent, i, board)
         self.bfs_for_goal(board)
         agent.path_plan = []
-        agent.path_plan.append(board.goal)
+        agent.path_plan.append(board.goal_pos[0])
         self.find_plan(0, agent, board)
-        self.convert_path_from_plan(self, agent, board)
+        self.convert_path_from_plan(agent, board)
