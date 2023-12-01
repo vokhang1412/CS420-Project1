@@ -31,8 +31,20 @@ if __name__ == '__main__':
     agent_t1 = agent.Agent((agent_pos[0][0], agent_pos[0][1], agent_pos[0][2])) 
 
     board = board.Board(floor, rows, cols, map_info, agent_pos, goal_pos, key_pos, door_pos, up_stairs_pos, down_stairs_pos)
+    # print(board.floor)
+    # print(board.rows)
+    # print(board.cols)
+    # for i in range(len(board.keys)):
+    #     print(board.keys[i])
     level2_solver.solve(board, agent_t1)
-
+    # for i in range(len(board.successors)):
+    #     print(board.keys[i])
+    #     print(len(board.successors[i]))
+    #     for j in range(len(board.successors[i])):
+    #         print(board.successors[i][j])
+    # print(board.key_number[(0, 3, 12)])
+    # print(board.door_number[(0, 15, 2)])
+    # print(board.key_number[(0, 11, 11)])
     displayer.render_info.agents_paths.append(agent_t1.path)
 
     displayer.to_export.append(agent_t1.path.copy())
