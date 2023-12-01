@@ -50,9 +50,9 @@ class RenderInfo:
                 surface.blit(text, text_rect)
         # If the cell is a door, add text D<num> to the cell
         for door in self.doors:
-            if door[0] == self.floor - 1:
-                rect = pygame.Rect(door[2] * (self.cell_size + self.margin), door[1] * (self.cell_size + self.margin), self.cell_size, self.cell_size)
-                text = self.font.render('D' + str(self.doors.index(door) + 1), True, (0, 0, 0))
+            if door[1][0] == self.floor - 1:
+                rect = pygame.Rect(door[1][2] * (self.cell_size + self.margin), door[1][1] * (self.cell_size + self.margin), self.cell_size, self.cell_size)
+                text = self.font.render('D' + str(door[0] + 1), True, (0, 0, 0))
                 text_rect = text.get_rect(center=(rect.x + rect.width / 2, rect.y + rect.height / 2))
                 surface.blit(text, text_rect)
         # If the cell is an UP stairs, add text UP to the cell
