@@ -2,7 +2,7 @@ import pygame
 import export_heatmap
 from .render_info import RenderInfo
 
-period = 0.1
+period = 0.2
 
 class Display:
     def __init__(self, map_info, keys, doors, up_stairs, down_stairs, paths, goal_pos):
@@ -57,6 +57,7 @@ class Display:
             if self.render_info.agents_paths[0] == []:
                 pygame.time.wait(2000)
                 for path in self.to_export:
+                    print(path)
                     exporter = export_heatmap.HeatmapExporting(self.render_info.map_info, path, self.to_export.index(path) + 1)
                     exporter.export()
                 pygame.quit()

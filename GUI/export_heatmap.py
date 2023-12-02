@@ -43,6 +43,8 @@ class HeatmapExporting:
         if not os.path.exists("agent " + str(self.agent_num)):
             os.makedirs("agent " + str(self.agent_num))
         os.chdir("agent " + str(self.agent_num))
+        for file in os.listdir():
+            os.remove(file)
 
         # export the heatmap
         for floor in range(self.map_info.__len__()):
