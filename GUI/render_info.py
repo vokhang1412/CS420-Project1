@@ -28,7 +28,8 @@ class RenderInfo:
         for path in self.agents_paths:
             if len(path) > 0:
                 self.agents_current_pos.append(path.pop(0))
-            
+        if self.agents_current_pos[0][0] != self.floor - 1:
+            self.floor = self.agents_current_pos[0][0] + 1
 
     def draw(self, surface):
         surface.fill((255, 255, 255))
