@@ -32,7 +32,7 @@ class Level2:
                         q.put(pos)
     def bfs_for_agent(self, agent, board):  #find KEYS the agent can reach
         q = Queue()
-        q.put(agent.pos)
+        q.put(agent.start)
         visited = {}
         while not q.empty():
             cur = q.get()
@@ -41,9 +41,6 @@ class Level2:
             visited[cur] = True
             if cur in board.keys:
                 board.can_visit_key[board.key_number[cur]] = True
-                continue
-            if cur == board.goal_pos[0]:
-                board.can_visit_goal[0] = True
                 continue
             successors = board.get_successor_for_agent(cur)
             for pos in successors:
@@ -94,7 +91,7 @@ class Level2:
             return
         board.visited[(cur, can_visit_door)] = 1
         if can_visit_door == True and board.can_visit_key.get(index) == True:
-            agent.path_plan.append(agent.pos)
+            agent.path_plan.append(agent.start)
             board.ok = True
             return
         for pos in board.successors[index]:
@@ -111,7 +108,7 @@ class Level2:
         
     def convert_path_from_plan(self, agent, board):
         cur = agent.path_plan.pop()
-        if cur != agent.pos:
+        if cur != agent.start:
             return
         while agent.path_plan:
             next = agent.path_plan.pop()
