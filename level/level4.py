@@ -22,7 +22,7 @@ class Level4:
             visited[cur] = True
             if cur == goal:
                 return self.construct_path(start, goal, come_from)
-            successor = board.get_successor_for_agent(cur)
+            successor = board.get_successor_for_agent(agent, cur)
             for pos in successor:
                     if visited.get(pos) == None:
                         come_from[pos] = cur 
@@ -41,12 +41,9 @@ class Level4:
             if cur in board.keys:
                 board.can_visit_key[board.key_number[cur]] = True
                 continue
-            if cur == board.goal_pos[index]:
-                board.can_visit_goal[0] = True
-                continue
-            successors = board.get_successor_for_agent(cur)
+            successors = board.get_successor_for_agent(agent, cur)
             for pos in successors:
-                    q.put(pos)
+                q.put(pos)
     def bfs_for_keys(self, index, agent, board): #find DOORS the key can reach
         q = Queue()
         pos = board.keys[index]
@@ -80,17 +77,17 @@ class Level4:
             if visited.get(cur) != None:
                 continue
             visited[cur] = True
-            if board.door_number.get(cur) != None:
+            if board.door_number.get(cur) != None and agent.has_key[board.door_number[cur]] == False:
                 board.goal_successors[index].append(cur)
                 continue
-            successors = board.get_successors(agent, cur)
+            successors = board.get_successors(cur)
             for pos in successors:
                 q.put(pos)
-    def find_plan(self, index, can_visit_door, agent, board): #dfs
+    def find_plan(self, index, agent_index, can_visit_door, agent, board): #dfs
         cur = board.keys[index]
-        if board.visited.get((cur, can_visit_door)) != None:
+        if board.visited[agent_index].get((cur, can_visit_door)) != None:
             return
-        board.visited[(cur, can_visit_door)] = 1
+        board.visited[agent_index][(cur, can_visit_door)] = 1
         if can_visit_door == True and board.can_visit_key.get(index) == True:
             agent.path_plan.append(agent.pos)
             board.ok = True
@@ -105,7 +102,6 @@ class Level4:
             if board.ok:
                 return
             agent.path_plan.pop()
-        board.visited[cur] = -1
     def solve(self, agent, board):
         while True:
             for i in range(len(agent)):
@@ -122,7 +118,7 @@ class Level4:
                     can_visit_doors = False
                     if board.can_visit_door.get(board.goal_successors[i][j]) == True: 
                         can_visit_doors = True
-                    self.find_plan(board.door_number[board.goal_successors[i][j]], can_visit_doors, ag, board)
+                    self.find_plan(board.door_number[board.goal_successors[i][j]], i, can_visit_doors, ag, board)
                     if len(ag.path_plan) > 1:
                         break
                     ag.path_plan.pop()
@@ -144,7 +140,7 @@ class Level4:
                             board.goal_pos[i] = self.generate_new_task(board)
                     if board.key_number.get(cur):
                         agent.has_key[board.key_number[cur]] = True
-                        
+                board.visited[i].clear()
     # random new task for other agent
     def generate_new_task(self, board):
         import random

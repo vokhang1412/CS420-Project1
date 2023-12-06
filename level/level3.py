@@ -23,7 +23,7 @@ class Level3:
             if cur == goal:
                 agent.add_path(self.construct_path(start, goal, come_from))
                 return
-            successor = board.get_successor_for_agent(cur)
+            successor = board.get_successor_for_agent(agent, cur)
             for pos in successor:
                     if visited.get(pos) == None:
                         come_from[pos] = cur 
@@ -31,7 +31,7 @@ class Level3:
                         q.put(pos)
     def bfs_for_agent(self, agent, board):  #find KEYS the agent can reach
         q = Queue()
-        q.put(agent.pos)
+        q.put(agent.start)
         visited = {}
         while not q.empty():
             cur = q.get()
@@ -41,12 +41,9 @@ class Level3:
             if cur in board.keys:
                 board.can_visit_key[board.key_number[cur]] = True
                 continue
-            if cur == board.goal_pos[0]:
-                board.can_visit_goal[0] = True
-                continue
-            successors = board.get_successor_for_agent(cur)
+            successors = board.get_successor_for_agent(agent, cur)
             for pos in successors:
-                    q.put(pos)
+                q.put(pos)
             
     def bfs_for_keys(self, agent, index, board): #find DOORS the key can reach
         q = Queue()
@@ -71,7 +68,7 @@ class Level3:
             successors = board.get_successors(cur)
             for pos in successors:
                 q.put(pos)
-    def bfs_for_goal(self, board): #find DOORS the goal can reach
+    def bfs_for_goal(self, agent, board): #find DOORS the goal can reach
         q = Queue()
         q.put(board.goal_pos[0])
         visited = {}
@@ -81,7 +78,7 @@ class Level3:
             if visited.get(cur) != None:
                 continue
             visited[cur] = True
-            if board.door_number.get(cur) != None:
+            if board.door_number.get(cur) != None and agent.has_key[board.door_number[cur]] == False:
                 board.goal_successors[0].append(cur)
                 continue
             successors = board.get_successors(cur)
@@ -93,7 +90,7 @@ class Level3:
             return
         board.visited[(cur, can_visit_door)] = 1
         if can_visit_door == True and board.can_visit_key.get(index) == True:
-            agent.path_plan.append(agent.pos)
+            agent.path_plan.append(agent.start)
             board.ok = True
             return
         for pos in board.successors[index]:
@@ -110,7 +107,7 @@ class Level3:
         
     def convert_path_from_plan(self, agent, board):
         cur = agent.path_plan.pop()
-        if cur != agent.pos:
+        if cur != agent.start:
             return
         while agent.path_plan:
             next = agent.path_plan.pop()
@@ -119,14 +116,13 @@ class Level3:
                 return
             self.find_path(agent, cur, board.keys[board.door_number[next]], board)
             cur = board.keys[board.door_number[next]]
-            board.has_key[board.door_number[next]] = True
-            self.find_path(agent, cur, next, board)
-            cur = next
+            agent.has_key[board.door_number[next]] = True
     def solve(self, board, agent):
         self.bfs_for_agent(agent, board)
+        
         for i in range(len(board.keys)):
             self.bfs_for_keys(agent, i, board)
-        self.bfs_for_goal(board)
+        self.bfs_for_goal(agent, board)
         agent.path_plan = []
         agent.path_plan.append(board.goal_pos[0])
         
