@@ -60,7 +60,7 @@ class Board:
             pos = (cur[0], cur[1] + self.dx[i], cur[2] + self.dy[i])
             # if pos == (0, 3, 5):
             #     print(self.check_valid_for_agent(pos))
-            if self.check_valid_for_agent(pos):
+            if self.check_valid_for_agent(agent, pos):
                 successors.append(pos)
         for i in range(len(self.dx_diagonal)):
             pos = (cur[0], cur[1] + self.dx_diagonal[i], cur[2] + self.dy_diagonal[i])
