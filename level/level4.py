@@ -140,6 +140,19 @@ class Level4:
                         if i == 0:
                             return
                         # TODO: else generate new task for other agent
+                        else:
+                            board.goal_pos[i] = self.generate_new_task(board)
                     if board.key_number.get(cur):
                         agent.has_key[board.key_number[cur]] = True
                         
+    # random new task for other agent
+    def generate_new_task(self, board):
+        import random
+        while True:
+            i_rad = random.randint(0, len(board.map) - 1)
+            j_rad = random.randint(0, len(board.map[0]) - 1)
+            k_rad = random.randint(0, len(board.map[0][0]) - 1)
+            new_goal = (i_rad, j_rad, k_rad)
+            if board.map[i_rad][j_rad][k_rad] != -1 and new_goal not in board.goal_pos and new_goal not in board.key_pos and new_goal not in board.door_pos and new_goal not in board.up_stairs_pos and new_goal not in board.down_stairs_pos:
+                return (i_rad, j_rad, k_rad)            
+        
