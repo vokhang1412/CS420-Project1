@@ -119,6 +119,12 @@ class Level4:
     def solve(self, board, agent):
         # print(board.goal_pos)
         # print(board.agent_pos)
+        # agent[1].start = (0, 4, 4)
+        # agent[1].has_key[board.key_number[(0, 4, 4)]] = True
+        # board.goal_pos[1] = (0, 3, 5)
+        # print(board.key_number)
+        # for i in range(len(agent)):
+        #     print(agent[i].path)
         while True:
             for i in range(len(agent)):
                 self.bfs_for_agent(i, agent[i], board)
@@ -145,10 +151,11 @@ class Level4:
                         agent[i].path_plan.pop()
                 else:
                     agent[i].path_plan.append(agent[i].start)
-                print(agent[i].path_plan)
+                # print(agent[i].path_plan)
                 cur = agent[i].path_plan.pop()
-                # if i == 0: print(agent[i].has_key)
-                
+                # print(agent[i].has_key)
+                # print(agent[i].start)
+                # print(cur)
                 if cur != agent[i].start:
                     agent[i].path.append(agent[i].start)
                 else:
@@ -167,12 +174,17 @@ class Level4:
                     board.map[path[0][0]][path[0][1]][path[0][2]] = -1
                     if agent[i].start == board.goal_pos[i]:
                         if i == 0:
+                            print(agent[i].path)
                             return
                         # TODO: else generate new task for other agent
                         else:
                             board.goal_pos[i] = self.generate_new_task(board)
                             agent[i].has_key = [False] * len(board.keys)
-                    if board.key_number.get(agent[i].start):
+                    # print(agent[i].start)
+                    # if agent[i].start == (0, 4, 4): print(board.key_number.get(agent[i].start))
+                    if board.key_number.get(agent[i].start) != None:
+                        # if agent[i].start == (0, 4, 4):
+                        #     print(agent[i].start)
                         agent[i].has_key[board.key_number[agent[i].start]] = True
                 board.visited[i].clear()
                 board.can_visit_goal[i] = False
