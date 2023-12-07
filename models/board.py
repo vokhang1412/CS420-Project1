@@ -7,8 +7,9 @@ class Board:
     dy = [1, -1, 0, 0]
     dx_diagonal = [1, 1, -1, -1]
     dy_diagonal = [1, -1, 1, -1]
-    can_visit_key = {}
+    can_visit_key = []
     can_visit_door = {}
+    can_visit_goal = []
     is_up = {}
     is_down = {}
     goal_pos = []
@@ -30,8 +31,10 @@ class Board:
         self.goal_pos = goal_pos
         self.keys = key_pos
         self.has_key = [False] * len(key_pos)
+        self.can_visit_goal = [False]*len(agent_pos)
         for i in range(len(agent_pos)):
             self.visited.append({})
+            self.can_visit_key.append({})
         for i in range(len(key_pos)):
             self.key_number[key_pos[i]] = i
         self.map = map_info
@@ -45,7 +48,8 @@ class Board:
             self.successors.append([])
         for i in range(len(goal_pos)):
             self.goal_successors.append([])
-            
+        for i in range(len(agent_pos)):
+            self.map[agent_pos[i][0]][agent_pos[i][1]][agent_pos[i][2]] = -1
     def check_valid_for_agent(self, agent, cur):
         if cur[1] < 0 or cur[1] >= self.rows or cur[2] < 0 or cur[2] >= self.cols or self.map[cur[0]][cur[1]][cur[2]] == -1:
             return False

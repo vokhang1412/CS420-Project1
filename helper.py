@@ -53,21 +53,27 @@ def read_map(filename):
                             # Find the number after A
                             num = int(line[i][1:])
                             # Add the agent to the list corresponding to the number
-                            agent_pos.insert(num-1, (len(map_info), len(board), i)) # floor, row, col
+                            while len(agent_pos) < num:
+                                agent_pos.append((0, 0, 0))
+                            agent_pos[num-1] = (len(map_info), len(board), i)
                         # Read goals
                         elif line[i].find('T') != -1:
                             row.append(0)
                             # Find the number after T
                             num = int(line[i][1:])
                             # Add the goal to the list corresponding to the number
-                            goal_pos.insert(num-1, (len(map_info), len(board), i))
+                            while len(goal_pos) < num:
+                                goal_pos.append((0, 0, 0))
+                            goal_pos[num-1] = (len(map_info), len(board), i)
                         # Read keys
                         elif line[i].find('K') != -1:
                             row.append(0)
                             # Find the number after K
                             num = int(line[i][1:])
                             # Add the key to the list corresponding to the number
-                            key_pos.insert(num-1, (len(map_info), len(board), i))
+                            while len(key_pos) < num:
+                                key_pos.append((0, 0, 0))
+                            key_pos[num-1] = (len(map_info), len(board), i)
                         # Read UP stairs
                         elif line[i] == 'UP':
                             row.append(0)

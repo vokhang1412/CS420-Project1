@@ -18,7 +18,7 @@ class Game:
         self.level1_solver = level1.Level1()
         self.level2_solver = level2.Level2()
         self.level3_solver = level3.Level3()
-        # self.level4_solver = level4.Level4()
+        self.level4_solver = level4.Level4()
         self.displayer = None
 
         self.floor = None
@@ -89,8 +89,8 @@ class Game:
             self.level2_solver.solve(self.board, self.agents[0])
         elif self.level == 3:
             self.level3_solver.solve(self.board, self.agents[0])
-        # elif level == 4:
-        #     self.level4_solver.solve(self.map_info, self.agent_pos, self.goal_pos, self.key_pos, self.door_pos, self.up_stairs_pos, self.down_stairs_pos, algorithm)
+        elif self.level == 4:
+            self.level4_solver.solve(self.board, self.agents)
 
     def display_result(self):
         if self.level == 1:
