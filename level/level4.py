@@ -171,7 +171,7 @@ class Level4:
                     agent[i].path.append(path[0])
                     board.map[agent[i].start[0]][agent[i].start[1]][agent[i].start[2]] = 0
                     agent[i].start = path[0]
-                    board.map[path[0][0]][path[0][1]][path[0][2]] = -1
+                    board.map[path[0][0]][path[0][1]][path[0][2]] = -2
                     if agent[i].start == board.goal_pos[i]:
                         if i == 0:
                             print(agent[i].path)

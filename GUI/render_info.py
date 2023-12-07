@@ -36,7 +36,7 @@ class RenderInfo:
         floor_info = self.map_info[self.floor - 1]
         for i in range(len(floor_info)):
             for j in range(len(floor_info[i])):
-                if floor_info[i][j] == 0:
+                if floor_info[i][j] == 0 or floor_info[i][j] == -2:
                     rect = pygame.Rect(j * (self.cell_size + self.margin), i * (self.cell_size + self.margin), self.cell_size, self.cell_size)
                     pygame.draw.rect(surface, (128, 128, 128), rect)
                 elif floor_info[i][j] == -1:

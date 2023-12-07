@@ -57,7 +57,6 @@ class Display:
             if self.render_info.agents_paths[0] == []:
                 pygame.time.wait(2000)
                 for path in self.to_export:
-                    print(path)
                     exporter = export_heatmap.HeatmapExporting(self.render_info.map_info, path, self.to_export.index(path) + 1)
                     exporter.export()
                 pygame.quit()

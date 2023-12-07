@@ -99,6 +99,10 @@ class Game:
         elif self.level == 2 or self.level == 3:
             self.displayer.render_info.agents_paths.append(self.agents[0].path.copy())
             self.displayer.to_export.append(self.agents[0].path.copy()) 
+        elif self.level == 4:
+            for i in range(len(self.agents)):
+                self.displayer.render_info.agents_paths.append(self.agents[i].path.copy())
+                self.displayer.to_export.append(self.agents[i].path.copy())
         self.displayer.run()
 
     def run(self):
