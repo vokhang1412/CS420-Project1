@@ -1,4 +1,5 @@
 import pygame
+import random
 
 SCREEN_WIDTH = 1500
 SCREEN_HEIGHT = 1500
@@ -16,7 +17,10 @@ class RenderInfo:
         self.down_stairs = down_stairs
         self.goals = goals
         self.font = pygame.font.SysFont('Arial', 12)
+        self.colors = []
         self.agents_paths = []
+        for i in range(len(self.goals)):
+            self.colors.append((random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)))
         self.cell_size = 20
         self.margin = 2
         self.board_height = len(map_info[0]) * (self.cell_size + self.margin)
@@ -74,6 +78,9 @@ class RenderInfo:
         for goal in self.goals:
             if goal[0] == self.floor - 1:
                 rect = pygame.Rect(goal[2] * (self.cell_size + self.margin), goal[1] * (self.cell_size + self.margin), self.cell_size, self.cell_size)
+                # color = (255, 0, 0) if self.goals.index(goal) == 0 else random.choice([(255, 0, 0), (0, 255, 0), (0, 0, 255)])
+                color = self.colors[self.goals.index(goal)]
+                pygame.draw.rect(surface, color, rect)
                 text = self.font.render('T' + str(self.goals.index(goal) + 1), True, (0, 0, 0))
                 text_rect = text.get_rect(center=(rect.x + rect.width / 2, rect.y + rect.height / 2))
                 surface.blit(text, text_rect)
@@ -81,7 +88,8 @@ class RenderInfo:
         for agent in self.agents_current_pos:
             if agent and agent[0] == self.floor - 1:
                 rect = pygame.Rect(agent[2] * (self.cell_size + self.margin), agent[1] * (self.cell_size + self.margin), self.cell_size, self.cell_size)
-                pygame.draw.rect(surface, (255, 0, 0), rect)
+                color = self.colors[self.agents_current_pos.index(agent)]
+                pygame.draw.rect(surface, color, rect)
                 text = self.font.render('A' + str(self.agents_current_pos.index(agent) + 1), True, (0, 0, 0))
                 text_rect = text.get_rect(center=(rect.x + rect.width / 2, rect.y + rect.height / 2))
                 surface.blit(text, text_rect)

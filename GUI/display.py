@@ -1,5 +1,6 @@
 import pygame
 import export_heatmap
+import random
 from .render_info import RenderInfo
 
 period = 0.2
