@@ -20,7 +20,11 @@ class RenderInfo:
         self.colors = []
         self.agents_paths = []
         for i in range(len(self.goals)):
-            self.colors.append((random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)))
+            color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
+            if color in self.colors:
+                while color in self.colors or color == (255, 255, 255) or color == (0, 0, 0):
+                    color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
+            self.colors.append(color)
         self.cell_size = 20
         self.margin = 2
         self.board_height = len(map_info[0]) * (self.cell_size + self.margin)
