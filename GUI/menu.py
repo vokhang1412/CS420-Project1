@@ -84,7 +84,7 @@ class Game:
             elif algorithm == 3:
                 self.path_save_for_lv1 = self.level1_solver.ucs(self.map_info[0], self.agents[0])
             elif algorithm == 4:
-                self.path_save_for_lv1 = self.level1_solver.a_star(self.map_info[0], self.agents[0])
+                self.path_save_for_lv1 = self.level1_solver.astar(self.map_info[0], self.agents[0])
         elif self.level == 2:
             self.level2_solver.solve(self.board, self.agents[0])
         elif self.level == 3:
