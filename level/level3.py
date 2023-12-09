@@ -60,7 +60,6 @@ class Level3:
         plan = {}
         plan[agent.start] = [agent.start]
         q.put(agent.start)
-        cnt = 10
         while True:
             tmp_has_key = has_key.copy()
             door = Queue()
@@ -95,10 +94,10 @@ class Level3:
                 break
             while not door.empty():
                 q.put(door.get())
-            cnt -= 1
         return []
         
     def solve(self, board, agent):
+        board.map[agent.start[0]][agent.start[1]][agent.start[2]] = 0
         path_plan = self.find_plan(agent, board)
         if len(path_plan) > 0:
             path_plan.append(board.goal_pos[0])

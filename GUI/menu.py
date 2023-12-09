@@ -72,7 +72,7 @@ class Game:
     def call_solver(self, algorithm):
         self.board = board.Board(self.floor, self.rows, self.cols, self.map_info, self.agent_pos, self.goal_pos, self.key_pos, self.door_pos, self.up_stairs_pos, self.down_stairs_pos)
         for i in range(len(self.agent_pos)):
-            self.agents.append(agent.Agent((self.agent_pos[i][0], self.agent_pos[i][1], self.agent_pos[i][2]), self.board))
+            self.agents.append(agent.Agent((self.agent_pos[i][0], self.agent_pos[i][1], self.agent_pos[i][2]), self.goal_pos[i], self.board))
         if self.level == 1:
             self.agents[0].start = (self.agent_pos[0][1], self.agent_pos[0][2])
             self.agents[0].goal = (self.goal_pos[0][1], self.goal_pos[0][2])

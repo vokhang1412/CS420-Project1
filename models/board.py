@@ -48,8 +48,8 @@ class Board:
             self.successors.append([])
         for i in range(len(goal_pos)):
             self.goal_successors.append([])
-        # for i in range(len(agent_pos)):
-        #     self.map[agent_pos[i][0]][agent_pos[i][1]][agent_pos[i][2]] = -2
+        for i in range(len(agent_pos)):
+            self.map[agent_pos[i][0]][agent_pos[i][1]][agent_pos[i][2]] = -2
     def check_valid_for_agent(self, agent, cur):
         if cur[1] < 0 or cur[1] >= self.rows or cur[2] < 0 or cur[2] >= self.cols or self.map[cur[0]][cur[1]][cur[2]] != 0:
             return False
