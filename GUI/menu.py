@@ -68,7 +68,6 @@ class Game:
     
     def read_map(self, map_name):
         self.floor, self.rows, self.cols, self.map_info, self.agent_pos, self.goal_pos, self.key_pos, self.door_pos, self.up_stairs_pos, self.down_stairs_pos = read_map('./data/' + map_name)
-        self.displayer = display.Display(self.map_info, self.key_pos, self.door_pos, self.up_stairs_pos, self.down_stairs_pos, [], self.goal_pos)
 
     def call_solver(self, algorithm):
         self.board = board.Board(self.floor, self.rows, self.cols, self.map_info, self.agent_pos, self.goal_pos, self.key_pos, self.door_pos, self.up_stairs_pos, self.down_stairs_pos)
@@ -93,6 +92,7 @@ class Game:
             self.level4_solver.solve(self.board, self.agents)
 
     def display_result(self):
+        self.displayer = display.Display(self.map_info, self.key_pos, self.door_pos, self.up_stairs_pos, self.down_stairs_pos, [], self.goal_pos)
         if self.level == 1:
             self.displayer.render_info.agents_paths.append(self.path_save_for_lv1.copy())
             self.displayer.to_export.append(self.path_save_for_lv1.copy())

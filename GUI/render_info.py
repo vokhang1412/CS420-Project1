@@ -2,7 +2,7 @@ import pygame
 import random
 
 SCREEN_WIDTH = 1500
-SCREEN_HEIGHT = 1500
+SCREEN_HEIGHT = 700
 
 class RenderInfo:
     SCREEN_WIDTH = SCREEN_WIDTH

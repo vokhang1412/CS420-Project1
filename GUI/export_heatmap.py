@@ -29,6 +29,7 @@ class HeatmapExporting:
 
     def export_heatmap(self, floor):
         surface = pygame.Surface((len(self.map_info[floor][0]) * (CELL_SIZE + MARGIN), len(self.map_info[floor]) * (CELL_SIZE + MARGIN)), pygame.SRCALPHA)
+        surface.fill((0, 0, 0))
         for i in range(len(self.map_info[floor])):
             for j in range(len(self.map_info[floor][i])):
                 rect = pygame.Rect(j * (CELL_SIZE + MARGIN), i * (CELL_SIZE + MARGIN), CELL_SIZE, CELL_SIZE)

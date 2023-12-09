@@ -174,7 +174,6 @@ class Level4:
                     board.map[path[0][0]][path[0][1]][path[0][2]] = -2
                     if agent[i].start == board.goal_pos[i]:
                         if i == 0:
-                            print(agent[i].path)
                             return
                         # TODO: else generate new task for other agent
                         else:
