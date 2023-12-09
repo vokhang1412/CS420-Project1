@@ -20,10 +20,10 @@ class RenderInfo:
         self.colors = []
         self.agents_paths = []
         for i in range(len(self.goals)):
-            color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
+            # random dark color for each goal
+            color = (random.randint(50, 100), random.randint(50, 100), random.randint(50, 100))
             if color in self.colors:
-                while color in self.colors or color == (255, 255, 255) or color == (0, 0, 0):
-                    color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
+                color = (random.randint(50, 100), random.randint(50, 100), random.randint(50, 100))
             self.colors.append(color)
         self.cell_size = 20
         self.margin = 2
@@ -54,28 +54,28 @@ class RenderInfo:
         for key in self.keys:
             if key[0] == self.floor - 1:
                 rect = pygame.Rect(key[2] * (self.cell_size + self.margin), key[1] * (self.cell_size + self.margin), self.cell_size, self.cell_size)
-                text = self.font.render('K' + str(self.keys.index(key) + 1), True, (0, 0, 0))
+                text = self.font.render('K' + str(self.keys.index(key) + 1), True, (255, 255, 255))
                 text_rect = text.get_rect(center=(rect.x + rect.width / 2, rect.y + rect.height / 2))
                 surface.blit(text, text_rect)
         # If the cell is a door, add text D<num> to the cell
         for door in self.doors:
             if door[1][0] == self.floor - 1:
                 rect = pygame.Rect(door[1][2] * (self.cell_size + self.margin), door[1][1] * (self.cell_size + self.margin), self.cell_size, self.cell_size)
-                text = self.font.render('D' + str(door[0] + 1), True, (0, 0, 0))
+                text = self.font.render('D' + str(door[0] + 1), True, (255, 255, 255))
                 text_rect = text.get_rect(center=(rect.x + rect.width / 2, rect.y + rect.height / 2))
                 surface.blit(text, text_rect)
         # If the cell is an UP stairs, add text UP to the cell
         for up_stairs in self.up_stairs:
             if up_stairs[0] == self.floor - 1:
                 rect = pygame.Rect(up_stairs[2] * (self.cell_size + self.margin), up_stairs[1] * (self.cell_size + self.margin), self.cell_size, self.cell_size)
-                text = self.font.render('UP', True, (0, 0, 0))
+                text = self.font.render('UP', True, (255, 255, 255))
                 text_rect = text.get_rect(center=(rect.x + rect.width / 2, rect.y + rect.height / 2))
                 surface.blit(text, text_rect)
         # If the cell is a DOWN stairs, add text DOWN to the cell
         for down_stairs in self.down_stairs:
             if down_stairs[0] == self.floor - 1:
                 rect = pygame.Rect(down_stairs[2] * (self.cell_size + self.margin), down_stairs[1] * (self.cell_size + self.margin), self.cell_size, self.cell_size)
-                text = self.font.render('DO', True, (0, 0, 0))
+                text = self.font.render('DO', True, (255, 255, 255))
                 text_rect = text.get_rect(center=(rect.x + rect.width / 2, rect.y + rect.height / 2))
                 surface.blit(text, text_rect)
         # If the cell is a goal, add text T<num> to the cell
@@ -85,7 +85,7 @@ class RenderInfo:
                 # color = (255, 0, 0) if self.goals.index(goal) == 0 else random.choice([(255, 0, 0), (0, 255, 0), (0, 0, 255)])
                 color = self.colors[self.goals.index(goal)]
                 pygame.draw.rect(surface, color, rect)
-                text = self.font.render('T' + str(self.goals.index(goal) + 1), True, (0, 0, 0))
+                text = self.font.render('T' + str(self.goals.index(goal) + 1), True, (255, 255, 255))
                 text_rect = text.get_rect(center=(rect.x + rect.width / 2, rect.y + rect.height / 2))
                 surface.blit(text, text_rect)
         # If the cell is an agent, add text A<num> to the cell
@@ -94,7 +94,7 @@ class RenderInfo:
                 rect = pygame.Rect(agent[2] * (self.cell_size + self.margin), agent[1] * (self.cell_size + self.margin), self.cell_size, self.cell_size)
                 color = self.colors[self.agents_current_pos.index(agent)]
                 pygame.draw.rect(surface, color, rect)
-                text = self.font.render('A' + str(self.agents_current_pos.index(agent) + 1), True, (0, 0, 0))
+                text = self.font.render('A' + str(self.agents_current_pos.index(agent) + 1), True, (255, 255, 255))
                 text_rect = text.get_rect(center=(rect.x + rect.width / 2, rect.y + rect.height / 2))
                 surface.blit(text, text_rect)
             surface.blit(surface, (0, 0))

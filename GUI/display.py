@@ -2,6 +2,7 @@ import pygame
 import export_heatmap
 import random
 from .render_info import RenderInfo
+from win32gui import SetWindowPos
 
 period = 0.2
 
@@ -32,6 +33,7 @@ class Display:
         self.render_info.agents_current_pos = []
 
     def run(self):
+        SetWindowPos(pygame.display.get_wm_info()['window'], -1, 0, 0, 0, 0, 0x0001)
         while True:
             self.delta_time = self.clock.tick(self.fps) / 1000.0
             self.accu_time += self.delta_time
