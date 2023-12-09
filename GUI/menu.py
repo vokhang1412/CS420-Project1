@@ -94,12 +94,21 @@ class Game:
     def display_result(self):
         self.displayer = display.Display(self.map_info, self.key_pos, self.door_pos, self.up_stairs_pos, self.down_stairs_pos, [], self.goal_pos)
         if self.level == 1:
+            if len(self.path_save_for_lv1) == 0:
+                print("No solution")
+                return
             self.displayer.render_info.agents_paths.append(self.path_save_for_lv1.copy())
             self.displayer.to_export.append(self.path_save_for_lv1.copy())
         elif self.level == 2 or self.level == 3:
+            if len(self.agents[0].path) == 0:
+                print("No solution")
+                return
             self.displayer.render_info.agents_paths.append(self.agents[0].path.copy())
             self.displayer.to_export.append(self.agents[0].path.copy()) 
         elif self.level == 4:
+            if len(self.agents[0].path) == 0:
+                print("No solution")
+                return
             for i in range(len(self.agents)):
                 self.displayer.render_info.agents_paths.append(self.agents[i].path.copy())
                 self.displayer.to_export.append(self.agents[i].path.copy())
