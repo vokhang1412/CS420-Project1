@@ -63,7 +63,21 @@ class Game:
         return algorithm
     
     def input_map_name(self):
-        map_name = input("Input map name: ")
+        # format of map name: input<num>-level<level>.txt
+        map_name = input("Choose map (from 1 to 5): ")
+        if map_name == '1':
+            map_name = 'input1-level' + str(self.level) + '.txt'
+        elif map_name == '2':
+            map_name = 'input2-level' + str(self.level) + '.txt'
+        elif map_name == '3':
+            map_name = 'input3-level' + str(self.level) + '.txt'
+        elif map_name == '4':
+            map_name = 'input4-level' + str(self.level) + '.txt'
+        elif map_name == '5':
+            map_name = 'input5-level' + str(self.level) + '.txt'
+        else:
+            print("Invalid map name")
+            return self.input_map_name()
         return map_name
     
     def read_map(self, map_name):
