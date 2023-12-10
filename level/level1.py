@@ -42,6 +42,10 @@ class Level1:
                 
                 agent.path = self.reconstruct_path(came_from, start, goal)
                 totalscore = 100 - (len(agent.path) - self.manhattan_distance(start, goal))
+                if totalscore < 0:
+                    totalscore = 0
+                if totalscore > 100:
+                    totalscore = 100
                 print("Total Score: ",totalscore)
                 agent.goal = [(0, goal[0], goal[1])] * len(agent.path)
                 return agent.path
@@ -70,6 +74,10 @@ class Level1:
             if current == goal:
                 agent.path = self.reconstruct_path(came_from, start, goal)
                 totalscore = 100 - (len(agent.path) - self.manhattan_distance(start, goal))
+                if totalscore < 0:
+                    totalscore = 0
+                if totalscore > 100:
+                    totalscore = 100
                 print("Total Score: ",totalscore)
                 agent.goal = [(0, goal[0], goal[1])] * len(agent.path)
                 return agent.path
@@ -103,6 +111,10 @@ class Level1:
             if current == goal:
                 agent.path = self.reconstruct_path(came_from, start, goal)
                 totalscore = 100 - (len(agent.path) - self.manhattan_distance(start, goal))
+                if totalscore < 0:
+                    totalscore = 0
+                if totalscore > 100:
+                    totalscore = 100
                 print("Total Score: ",totalscore)
                 agent.goal = [(0, goal[0], goal[1])] * len(agent.path)
                 return agent.path
@@ -136,6 +148,10 @@ class Level1:
             if current == goal:
                 agent.path = self.reconstruct_path(came_from, start, goal)
                 totalscore = 100 - (len(agent.path) - self.manhattan_distance(start, goal))
+                if totalscore < 0:
+                    totalscore = 0
+                if totalscore > 100:
+                    totalscore = 100
                 print("Total Score: ",totalscore)
                 agent.goal = [(0, goal[0], goal[1])] * len(agent.path)
                 return agent.path
