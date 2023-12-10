@@ -111,7 +111,12 @@ class Level4:
                     board.map[pos[0]][pos[1]][pos[2]] = -2
                     if pos == board.goal_pos[i]:
                         if i == 0:
-                            print(100 - (len(ag.path) - (board.floor - 1)*(abs(ag.start[1] - board.goal_pos[0][1]) + abs(ag.start[2] - board.goal_pos[0][2]))))
+                            totalscore = 100 - (len(ag.path) - board.floor*(abs(ag.start[1] - board.goal_pos[0][1]) + abs(ag.start[2] - board.goal_pos[0][2])))
+                            if totalscore < 0:
+                                totalscore = 0
+                            if totalscore > 100:
+                                totalscore = 100
+                            print("Total Score: ",totalscore)
                             return
                         board.goal_pos[i] = self.generate_new_task(board)
                         ag.has_key = [False] * len(board.keys)

@@ -65,6 +65,7 @@ class Display:
                 for path in self.to_export:
                     exporter = export_heatmap.HeatmapExporting(self.render_info.map_info, path, self.to_export.index(path) + 1)
                     exporter.export()
+                pygame.time.wait(1000)
                 pygame.quit()
                 quit()
 

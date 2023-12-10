@@ -39,8 +39,10 @@ class Level1:
             current = queue.get()
 
             if current == goal:
-                print("Path found")
+                
                 agent.path = self.reconstruct_path(came_from, start, goal)
+                totalscore = 100 - (len(agent.path) - self.manhattan_distance(start, goal))
+                print("Total Score: ",totalscore)
                 agent.goal = [(0, goal[0], goal[1])] * len(agent.path)
                 return agent.path
 
@@ -50,7 +52,7 @@ class Level1:
                     visited.add(neighbor)
                     came_from[neighbor] = current
 
-        return None
+        return []
 
     def dfs(self, map_info, agent):
         start = (agent.start[1], agent.start[2])
@@ -67,6 +69,8 @@ class Level1:
 
             if current == goal:
                 agent.path = self.reconstruct_path(came_from, start, goal)
+                totalscore = 100 - (len(agent.path) - self.manhattan_distance(start, goal))
+                print("Total Score: ",totalscore)
                 agent.goal = [(0, goal[0], goal[1])] * len(agent.path)
                 return agent.path
             x, y = current  
@@ -81,7 +85,7 @@ class Level1:
                         continue
                     came_from[neighbor] = current
 
-        return None
+        return []
 
 
     def ucs(self, map_info, agent):
@@ -98,6 +102,8 @@ class Level1:
 
             if current == goal:
                 agent.path = self.reconstruct_path(came_from, start, goal)
+                totalscore = 100 - (len(agent.path) - self.manhattan_distance(start, goal))
+                print("Total Score: ",totalscore)
                 agent.goal = [(0, goal[0], goal[1])] * len(agent.path)
                 return agent.path
 
@@ -110,7 +116,7 @@ class Level1:
                     cost_so_far[neighbor] = new_cost
                     visited.add(neighbor)
 
-        return None
+        return []
     @staticmethod  
     def manhattan_distance(p1, p2):
         return abs(p1[0] - p2[0]) + abs(p1[1] - p2[1])
@@ -129,6 +135,8 @@ class Level1:
 
             if current == goal:
                 agent.path = self.reconstruct_path(came_from, start, goal)
+                totalscore = 100 - (len(agent.path) - self.manhattan_distance(start, goal))
+                print("Total Score: ",totalscore)
                 agent.goal = [(0, goal[0], goal[1])] * len(agent.path)
                 return agent.path
 
@@ -142,7 +150,7 @@ class Level1:
                     cost_so_far[neighbor] = new_cost
                     visited.add(neighbor)
 
-        return None
+        return []
     @staticmethod
     def reconstruct_path(came_from, start, goal):
         current = goal

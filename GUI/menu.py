@@ -91,7 +91,7 @@ class Game:
 
     def display_result(self):
         self.displayer = display.Display(self.map_info, self.key_pos, self.door_pos, self.up_stairs_pos, self.down_stairs_pos, [], self.goal_pos, [])
-        if self.level == 1 or self.level == 2 or self.level == 3:
+        if self.level==1 or self.level == 2 or self.level == 3:
             if len(self.agents[0].path) == 0:
                 print("No solution")
                 return
