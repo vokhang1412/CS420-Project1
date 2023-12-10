@@ -105,4 +105,5 @@ class Level2:
                 self.find_path(agent, path_plan[i - 1], path_plan[i], board)
                 if board.key_number.get(path_plan[i]) != None:
                     agent.has_key[board.key_number[path_plan[i]]] = True
+        agent.goal = [board.goal_pos[0]] * len(agent.path)
         print(100 - (len(agent.path) - (board.floor - 1)*(abs(agent.start[1] - board.goal_pos[0][1]) + abs(agent.start[2] - board.goal_pos[0][2]))))

@@ -29,7 +29,7 @@ class Level1:
 
     def bfs(self,map_info, agent):
         start = agent.start
-        goal = agent.goal
+        goal = agent.goal[0]
         visited = set()
         queue = Queue()
         queue.put(start)
@@ -41,6 +41,7 @@ class Level1:
             if current == goal:
                 print("Path found")
                 agent.path = self.reconstruct_path(came_from, start, goal)
+                agent.goal = [goal] * len(agent.path)
                 return agent.path
 
             for neighbor in self.get_neighbors(current, map_info):
@@ -53,7 +54,7 @@ class Level1:
 
     def dfs(self, map_info, agent):
         start = agent.start
-        goal = agent.goal
+        goal = agent.goal[0]
         rows, cols = len(map_info), len(map_info[0])
 
         visited = [[False] * cols for _ in range(rows)]
@@ -66,6 +67,7 @@ class Level1:
 
             if current == goal:
                 agent.path = self.reconstruct_path(came_from, start, goal)
+                agent.goal = [goal] * len(agent.path)
                 return agent.path
             x, y = current  
             if not visited[x][y]:
@@ -84,7 +86,7 @@ class Level1:
 
     def ucs(self, map_info, agent):
         start = agent.start
-        goal = agent.goal
+        goal = agent.goal[0]
         visited = set()
         priority_queue = PriorityQueue()
         priority_queue.put((0, start))
@@ -96,6 +98,7 @@ class Level1:
 
             if current == goal:
                 agent.path = self.reconstruct_path(came_from, start, goal)
+                agent.goal = [goal] * len(agent.path)
                 return agent.path
 
             for neighbor in self.get_neighbors(current, map_info):
@@ -114,7 +117,7 @@ class Level1:
 
     def astar(self, map_info, agent):
         start = agent.start
-        goal = agent.goal
+        goal = agent.goal[0]
         visited = set()
         priority_queue = PriorityQueue()
         priority_queue.put((0, start))
@@ -126,6 +129,7 @@ class Level1:
 
             if current == goal:
                 agent.path = self.reconstruct_path(came_from, start, goal)
+                agent.goal = [goal] * len(agent.path)
                 return agent.path
 
             for neighbor in self.get_neighbors(current, map_info):
