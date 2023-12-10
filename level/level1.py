@@ -28,8 +28,8 @@ class Level1:
         return neighbor
 
     def bfs(self,map_info, agent):
-        start = agent.start
-        goal = agent.goal[0]
+        start = (agent.start[1], agent.start[2])
+        goal = (agent.goal[0][1], agent.goal[0][2])
         visited = set()
         queue = Queue()
         queue.put(start)
@@ -41,7 +41,7 @@ class Level1:
             if current == goal:
                 print("Path found")
                 agent.path = self.reconstruct_path(came_from, start, goal)
-                agent.goal = [goal] * len(agent.path)
+                agent.goal = [(0, goal[0], goal[1])] * len(agent.path)
                 return agent.path
 
             for neighbor in self.get_neighbors(current, map_info):
@@ -53,8 +53,8 @@ class Level1:
         return None
 
     def dfs(self, map_info, agent):
-        start = agent.start
-        goal = agent.goal[0]
+        start = (agent.start[1], agent.start[2])
+        goal = (agent.goal[0][1], agent.goal[0][2])
         rows, cols = len(map_info), len(map_info[0])
 
         visited = [[False] * cols for _ in range(rows)]
@@ -67,7 +67,7 @@ class Level1:
 
             if current == goal:
                 agent.path = self.reconstruct_path(came_from, start, goal)
-                agent.goal = [goal] * len(agent.path)
+                agent.goal = [(0, goal[0], goal[1])] * len(agent.path)
                 return agent.path
             x, y = current  
             if not visited[x][y]:
@@ -85,8 +85,8 @@ class Level1:
 
 
     def ucs(self, map_info, agent):
-        start = agent.start
-        goal = agent.goal[0]
+        start = (agent.start[1], agent.start[2])
+        goal = (agent.goal[0][1], agent.goal[0][2])
         visited = set()
         priority_queue = PriorityQueue()
         priority_queue.put((0, start))
@@ -98,7 +98,7 @@ class Level1:
 
             if current == goal:
                 agent.path = self.reconstruct_path(came_from, start, goal)
-                agent.goal = [goal] * len(agent.path)
+                agent.goal = [(0, goal[0], goal[1])] * len(agent.path)
                 return agent.path
 
             for neighbor in self.get_neighbors(current, map_info):
@@ -116,8 +116,8 @@ class Level1:
         return abs(p1[0] - p2[0]) + abs(p1[1] - p2[1])
 
     def astar(self, map_info, agent):
-        start = agent.start
-        goal = agent.goal[0]
+        start = (agent.start[1], agent.start[2])
+        goal = (agent.goal[0][1], agent.goal[0][2])
         visited = set()
         priority_queue = PriorityQueue()
         priority_queue.put((0, start))
@@ -129,7 +129,7 @@ class Level1:
 
             if current == goal:
                 agent.path = self.reconstruct_path(came_from, start, goal)
-                agent.goal = [goal] * len(agent.path)
+                agent.goal = [(0, goal[0], goal[1])] * len(agent.path)
                 return agent.path
 
             for neighbor in self.get_neighbors(current, map_info):

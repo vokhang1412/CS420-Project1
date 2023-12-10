@@ -7,7 +7,7 @@ from win32gui import SetWindowPos
 period = 0.2
 
 class Display:
-    def __init__(self, map_info, keys, doors, up_stairs, down_stairs, paths, goal_pos):
+    def __init__(self, map_info, keys, doors, up_stairs, down_stairs, paths, goal_pos, goals):
         self.delta_time = 0
         self.accu_time = 0
         pygame.init()
@@ -27,10 +27,12 @@ class Display:
         self.screen.blit(self.surface, (self.center_x, self.center_y))
 
         self.render_info.agents_paths = paths
+        self.render_info.agents_goals = goals
 
         self.to_export = []
 
         self.render_info.agents_current_pos = []
+        self.render_info.agents_current_goal = []
 
     def run(self):
         SetWindowPos(pygame.display.get_wm_info()['window'], -1, 0, 0, 0, 0, 0x0001)
@@ -59,9 +61,20 @@ class Display:
 
             if self.render_info.agents_paths[0] == []:
                 pygame.time.wait(2000)
+                self.clear_agent_folders()
                 for path in self.to_export:
                     exporter = export_heatmap.HeatmapExporting(self.render_info.map_info, path, self.to_export.index(path) + 1)
                     exporter.export()
                 pygame.quit()
                 quit()
+
+    def clear_agent_folders(self):
+        import os
+        for folder in os.listdir():
+            if folder.startswith("agent"):
+                os.chdir(folder)
+                for file in os.listdir():
+                    os.remove(file)
+                os.chdir("..")
+                os.rmdir(folder)
 

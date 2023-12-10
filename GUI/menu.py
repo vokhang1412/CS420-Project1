@@ -74,8 +74,6 @@ class Game:
         for i in range(len(self.agent_pos)):
             self.agents.append(agent.Agent((self.agent_pos[i][0], self.agent_pos[i][1], self.agent_pos[i][2]), self.goal_pos[i], self.board))
         if self.level == 1:
-            self.agents[0].start = (self.agent_pos[0][1], self.agent_pos[0][2])
-            self.agents[0].goal = (self.goal_pos[0][1], self.goal_pos[0][2])
             if algorithm == 1:
                 self.path_save_for_lv1 = self.level1_solver.bfs(self.map_info[0], self.agents[0])
             elif algorithm == 2:
@@ -92,18 +90,13 @@ class Game:
             self.level4_solver.solve(self.board, self.agents)
 
     def display_result(self):
-        self.displayer = display.Display(self.map_info, self.key_pos, self.door_pos, self.up_stairs_pos, self.down_stairs_pos, [], self.goal_pos)
-        if self.level == 1:
-            if len(self.path_save_for_lv1) == 0:
-                print("No solution")
-                return
-            self.displayer.render_info.agents_paths.append(self.path_save_for_lv1.copy())
-            self.displayer.to_export.append(self.path_save_for_lv1.copy())
-        elif self.level == 2 or self.level == 3:
+        self.displayer = display.Display(self.map_info, self.key_pos, self.door_pos, self.up_stairs_pos, self.down_stairs_pos, [], self.goal_pos, [])
+        if self.level == 1 or self.level == 2 or self.level == 3:
             if len(self.agents[0].path) == 0:
                 print("No solution")
                 return
             self.displayer.render_info.agents_paths.append(self.agents[0].path.copy())
+            self.displayer.render_info.agents_goals.append(self.agents[0].goal.copy())
             self.displayer.to_export.append(self.agents[0].path.copy()) 
         elif self.level == 4:
             if len(self.agents[0].path) == 0:
@@ -111,6 +104,7 @@ class Game:
                 return
             for i in range(len(self.agents)):
                 self.displayer.render_info.agents_paths.append(self.agents[i].path.copy())
+                self.displayer.render_info.agents_goals.append(self.agents[i].goal.copy())
                 self.displayer.to_export.append(self.agents[i].path.copy())
         self.displayer.run()
 
