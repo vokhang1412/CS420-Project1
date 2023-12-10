@@ -42,8 +42,8 @@ class RenderInfo:
         for goal in self.agents_goals:
             if len(goal) > 0:
                 self.agents_current_goal.append(goal.pop(0))
-        if self.agents_current_pos[0][0] != self.floor - 1:
-            self.floor = self.agents_current_pos[0][0] + 1
+        # if self.agents_current_pos[0][0] != self.floor - 1:
+        #     self.floor = self.agents_current_pos[0][0] + 1
 
     def draw(self, surface):
         surface.fill((255, 255, 255))
