@@ -53,21 +53,27 @@ def read_map(filename):
                             # Find the number after A
                             num = int(line[i][1:])
                             # Add the agent to the list corresponding to the number
-                            agent_pos.insert(num-1, (len(map_info), len(board), i)) # floor, row, col
+                            while len(agent_pos) < num:
+                                agent_pos.append((0, 0, 0))
+                            agent_pos[num-1] = (len(map_info), len(board), i)
                         # Read goals
                         elif line[i].find('T') != -1:
                             row.append(0)
                             # Find the number after T
                             num = int(line[i][1:])
                             # Add the goal to the list corresponding to the number
-                            goal_pos.insert(num-1, (len(map_info), len(board), i))
+                            while len(goal_pos) < num:
+                                goal_pos.append((0, 0, 0))
+                            goal_pos[num-1] = (len(map_info), len(board), i)
                         # Read keys
                         elif line[i].find('K') != -1:
                             row.append(0)
                             # Find the number after K
                             num = int(line[i][1:])
                             # Add the key to the list corresponding to the number
-                            key_pos.insert(num-1, (len(map_info), len(board), i))
+                            while len(key_pos) < num:
+                                key_pos.append((0, 0, 0))
+                            key_pos[num-1] = (len(map_info), len(board), i)
                         # Read UP stairs
                         elif line[i] == 'UP':
                             row.append(0)
@@ -84,13 +90,13 @@ def read_map(filename):
                             # Find the number after D
                             num = int(line[i][1:])
                             # Add the door to the list corresponding to the number
-                            door_pos.insert(num-1, (len(map_info), len(board), i))
+                            door_pos.append((num-1, (len(map_info), len(board), i)))
                         else:
                             row.append(line[i])
                     board.append(row)
                 map_info.append(board)
     # 5. Return the map
-    return map_info, agent_pos, goal_pos, key_pos, door_pos, up_stairs_pos, down_stairs_pos
+    return len(map_info), rows, cols, map_info, agent_pos, goal_pos, key_pos, door_pos, up_stairs_pos, down_stairs_pos
 
 def test_print_map(map_info):
     # This function is used to test the map
